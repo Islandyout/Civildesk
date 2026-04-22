@@ -1,7 +1,7 @@
 // ServiceDesk Service Worker
 // Caches the app shell for full offline use
 
-const CACHE_NAME = 'servicedesk-v1';
+const CACHE_NAME = 'servicedesk-v3';
 
 // App shell — everything needed to run offline
 const PRECACHE = [
