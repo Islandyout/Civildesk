@@ -193,6 +193,13 @@ main{flex:1;padding:16px 16px 90px;max-width:600px;margin:0 auto;width:100%;}
   <div id="syncStatus" style="margin-top:16px;font-size:12px;color:var(--muted);text-align:center;display:flex;align-items:center;gap:4px;justify-content:center">
     <span class="sync-dot" id="syncDot"></span><span id="syncLabel">Connecting…</span>
   </div>
+  <!-- DEBUG PANEL — remove after fixing -->
+  <div id="debugPanel" style="margin-top:20px;background:#0a0c0e;border:1px solid #f0c040;border-radius:10px;padding:12px 14px;width:100%;max-width:300px;font-size:11px;font-family:monospace;">
+    <div style="color:#f0c040;font-weight:700;margin-bottom:8px;">🔍 Debug Panel</div>
+    <div id="dbg" style="color:#a0aec0;line-height:1.9;">Loading…</div>
+    <button onclick="refreshDebug()" style="margin-top:10px;background:#1e242d;border:1px solid #2a3140;color:#e8edf5;border-radius:6px;padding:5px 12px;font-size:11px;cursor:pointer;width:100%;">↻ Refresh</button>
+    <button onclick="clearAndReset()" style="margin-top:6px;background:#7f1d1d;border:1px solid #ef4444;color:#fca5a5;border-radius:6px;padding:5px 12px;font-size:11px;cursor:pointer;width:100%;">🗑 Clear local data &amp; reload</button>
+  </div>
 </div>
 
 <!-- MAIN APP -->
@@ -1461,9 +1468,47 @@ function installPWA(){if(!_deferredInstall)return;_deferredInstall.prompt();_def
 window.addEventListener('appinstalled',()=>{_deferredInstall=null;document.getElementById('installBanner')?.remove();toast('ServiceDesk installed! 🎉');});
 
 // ═══════════════════════════════════════════════
+//  DEBUG HELPERS — remove after fixing
+// ═══════════════════════════════════════════════
+function refreshDebug(){
+  try{
+    const members=JSON.parse(localStorage.getItem('sd_team_members'))||[];
+    const hasSB=typeof supabase!=='undefined';
+    const setupBtn=!!document.getElementById('lockSetupMsg')?.querySelector('button');
+    const modalOpen=!!document.getElementById('modal-overlay');
+    const lines=[
+      'Online: '+(isOnline?'✅ yes':'❌ no'),
+      'Supabase loaded: '+(hasSB?'✅ yes':'❌ NO — scripts blocked!'),
+      'Members in cache: '+members.length,
+      members.length?'First member: '+members[0].name+' ('+members[0].role+')':'⚠️ No members saved',
+      members.length?'Has pin_hash: '+(!!members[0].pin_hash?'✅ yes':'❌ MISSING'):'—',
+      'Setup btn visible: '+(setupBtn?'⚠️ yes — pad is blocked':'✅ no'),
+      'Modal open: '+(modalOpen?'⚠️ yes — pad is blocked':'✅ no'),
+      'PIN buf length: '+pinBuf.length,
+      'Queued writes: '+syncQueue.length,
+    ];
+    document.getElementById('dbg').innerHTML=lines.map(l=>'<div>'+l+'</div>').join('');
+  }catch(e){
+    document.getElementById('dbg').innerHTML='<div style="color:#ef4444">JS Error: '+e.message+'</div>';
+  }
+}
+function clearAndReset(){
+  if(!confirm('Clear ALL local data and reload? You will need to set up again.'))return;
+  localStorage.clear();
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.getRegistrations().then(regs=>{
+      regs.forEach(r=>r.unregister());
+      caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k)))).then(()=>location.reload(true));
+    });
+  }else{location.reload(true);}
+}
+
+// ═══════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════
 initLock();
+// Auto-refresh debug panel after init
+setTimeout(refreshDebug, 1500);
 </script>
 </body>
 </html>
