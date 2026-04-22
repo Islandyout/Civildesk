@@ -1151,7 +1151,7 @@ function openCreateMemberModal(isFirstSetup=false){
       </select>
     </div>`:''}
     <div class="modal-actions">
-      <button class="btn btn-primary" onclick="createMember(${isFirstSetup})">Create Account</button>
+      <button class="btn btn-primary" onclick="createMember(${isFirstSetup?'true':'false'})">Create Account</button>
       ${!isFirstSetup?`<button class="btn btn-secondary" onclick="closeModal()">Cancel</button>`:''}
     </div>`);
 }
@@ -1162,7 +1162,8 @@ async function createMember(isFirstSetup=false){
   if(!name){alert('Name required.');return;}
   if(!/^\d{4}$/.test(pin)){alert('PIN must be exactly 4 digits.');return;}
   if(pin!==pin2){alert('PINs do not match.');return;}
-  const role=isFirstSetup?'admin':(document.getElementById('tm_role')?.value||'member');
+  const setup=isFirstSetup===true||isFirstSetup==='true';
+  const role=setup?'admin':(document.getElementById('tm_role')?.value||'member');
   const pinHash=await hPin(pin);
   const obj={id:uid(),name,role,pin_hash:pinHash,created_at:new Date().toISOString()};
   // Save to local cache
@@ -1177,7 +1178,7 @@ async function createMember(isFirstSetup=false){
     setSyncStatus('offline','Offline');
   }
   closeModal();
-  if(isFirstSetup){
+  if(setup){
     // Auto-login as first member
     currentUser={id:obj.id,name:obj.name,role:obj.role};
     document.getElementById('lockScreen').style.display='none';
