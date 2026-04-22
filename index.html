@@ -168,7 +168,7 @@ main{flex:1;padding:16px 16px 90px;max-width:600px;margin:0 auto;width:100%;}
 
 <!-- LOCK SCREEN -->
 <div id="lockScreen">
-  <div class="lock-logo">⚙ ServiceDesk</div>
+  <div class="lock-logo" id="lockLogo" onclick="handleLogoTap()">⚙ ServiceDesk</div>
   <div class="lock-sub" id="lockMsg">Team Business Manager<br><span style="font-size:11px;opacity:.6">Enter your PIN to continue</span></div>
   <div class="pin-dots" id="pinDots">
     <div class="pin-dot" id="d0"></div><div class="pin-dot" id="d1"></div>
@@ -193,8 +193,8 @@ main{flex:1;padding:16px 16px 90px;max-width:600px;margin:0 auto;width:100%;}
   <div id="syncStatus" style="margin-top:16px;font-size:12px;color:var(--muted);text-align:center;display:flex;align-items:center;gap:4px;justify-content:center">
     <span class="sync-dot" id="syncDot"></span><span id="syncLabel">Connecting…</span>
   </div>
-  <!-- DEBUG PANEL — remove after fixing -->
-  <div id="debugPanel" style="margin-top:20px;background:#0a0c0e;border:1px solid #f0c040;border-radius:10px;padding:12px 14px;width:100%;max-width:300px;font-size:11px;font-family:monospace;">
+  <!-- DEBUG PANEL — hidden by default, toggle via clearAndReset or dev tools -->
+  <div id="debugPanel" style="display:none;margin-top:20px;background:#0a0c0e;border:1px solid #f0c040;border-radius:10px;padding:12px 14px;width:100%;max-width:300px;font-size:11px;font-family:monospace;">
     <div style="color:#f0c040;font-weight:700;margin-bottom:8px;">🔍 Debug Panel</div>
     <div id="dbg" style="color:#a0aec0;line-height:1.9;">Loading…</div>
     <button onclick="refreshDebug()" style="margin-top:10px;background:#1e242d;border:1px solid #2a3140;color:#e8edf5;border-radius:6px;padding:5px 12px;font-size:11px;cursor:pointer;width:100%;">↻ Refresh</button>
@@ -453,6 +453,8 @@ async function initLock(){
     return;
   }
 
+  // Members exist — ensure setup UI is cleared and PIN pad is active
+  document.getElementById('lockSetupMsg').innerHTML='';
   document.getElementById('lockMsg').innerHTML='Team Business Manager<br><span style="font-size:11px;opacity:.6">Enter your 4-digit PIN</span>';
 }
 
@@ -467,9 +469,10 @@ async function getTeamMembers(){
 }
 
 function pinKey(k){
-  // Don't accept input if setup modal is open or no members exist yet
+  // Don't accept input if setup modal is open or setup button is still visible
   if(document.getElementById('modal-overlay'))return;
-  if(document.getElementById('lockSetupMsg')?.querySelector('button'))return;
+  const setupMsg=document.getElementById('lockSetupMsg');
+  if(setupMsg&&setupMsg.querySelector('button'))return;
   if(pinBuf.length>=4)return;
   pinBuf+=k;
   document.getElementById('d'+(pinBuf.length-1)).classList.add('filled');
@@ -516,6 +519,8 @@ function lockApp(){
   document.getElementById('lockError').textContent='';
   document.getElementById('mainApp').classList.add('hidden');
   document.getElementById('lockScreen').style.display='flex';
+  // Re-run initLock to ensure lock screen state is correct (e.g. setup btn vs PIN pad)
+  initLock();
 }
 
 // ═══════════════════════════════════════════════
@@ -1192,21 +1197,25 @@ async function createMember(isFirstSetup=false){
       setSyncStatus('online','Live');
     }catch(e){
       console.warn('Could not save member to cloud:',e);
-      setSyncStatus('offline','Saved locally');
+      setSyncStatus('syncing','Queued');
       syncQueue.push({table:'team_members',row:obj});
     }
   }
   // Close modal and log in
   closeModal();
   if(setup){
+    // Clear the setup button so PIN pad is no longer blocked on future lock/unlock
+    document.getElementById('lockSetupMsg').innerHTML='';
+    document.getElementById('lockMsg').innerHTML='Team Business Manager<br><span style="font-size:11px;opacity:.6">Enter your 4-digit PIN</span>';
     currentUser={id:obj.id,name:obj.name,role:obj.role};
     document.getElementById('lockScreen').style.display='none';
     document.getElementById('mainApp').classList.remove('hidden');
     navigate('dashboard');
     toast(`Welcome, ${name}! Set up your business in Settings.`);
   }else{
-    navigate('team');
+    // Non-setup: user is already logged in, just refresh the team page
     toast(`${name} added!`);
+    navigate('team');
   }
 }
 function openEditMemberModal(id){
@@ -1468,8 +1477,21 @@ function installPWA(){if(!_deferredInstall)return;_deferredInstall.prompt();_def
 window.addEventListener('appinstalled',()=>{_deferredInstall=null;document.getElementById('installBanner')?.remove();toast('ServiceDesk installed! 🎉');});
 
 // ═══════════════════════════════════════════════
-//  DEBUG HELPERS — remove after fixing
+//  DEBUG HELPERS
 // ═══════════════════════════════════════════════
+let _logoTaps=0,_logoTimer=null;
+function handleLogoTap(){
+  _logoTaps++;
+  clearTimeout(_logoTimer);
+  _logoTimer=setTimeout(()=>_logoTaps=0,1500);
+  if(_logoTaps>=7){
+    _logoTaps=0;
+    const panel=document.getElementById('debugPanel');
+    const showing=panel.style.display!=='none';
+    panel.style.display=showing?'none':'block';
+    if(!showing){refreshDebug();}
+  }
+}
 function refreshDebug(){
   try{
     const members=JSON.parse(localStorage.getItem('sd_team_members'))||[];
@@ -1507,8 +1529,6 @@ function clearAndReset(){
 //  INIT
 // ═══════════════════════════════════════════════
 initLock();
-// Auto-refresh debug panel after init
-setTimeout(refreshDebug, 1500);
 </script>
 </body>
 </html>
