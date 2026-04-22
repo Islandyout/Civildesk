@@ -304,7 +304,6 @@ const DB={
   },
   async set(table,row){
     // Upsert single row
-    Cache.set(table+'_pending',Cache.get(table+'_pending').concat([row]));
     if(!isOnline){syncQueue.push({table,row});return row;}
     setSyncStatus('syncing','Saving…');
     try{
@@ -401,10 +400,10 @@ function toast(msg,type='success'){
   t.style.cssText=`position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:999;background:${col};color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;font-family:var(--font-body);box-shadow:0 4px 20px rgba(0,0,0,.4);max-width:90%;text-align:center;animation:slideUp .2s`;
   t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3500);
 }
-function showModal(html){
+function showModal(html,locked=false){
   closeModal();
   const ov=document.createElement('div');ov.className='modal-overlay';ov.id='modal-overlay';
-  ov.onclick=e=>{if(e.target===ov)closeModal();};
+  if(!locked)ov.onclick=e=>{if(e.target===ov)closeModal();};
   const m=document.createElement('div');m.className='modal';m.innerHTML=html;
   ov.appendChild(m);document.body.appendChild(ov);
 }
@@ -563,7 +562,7 @@ async function renderDashboard(){
   const todayJobs=jobs.filter(j=>j.date===td&&j.status!=='Cancelled');
   const inProg=jobs.filter(j=>j.status==='In Progress');
   const unpaid=invs.filter(i=>i.status==='Unpaid'||i.status==='Partial');
-  const overdue=invs.filter(i=>i.dueDate&&i.dueDate<td&&i.status!=='Paid');
+  const overdue=invs.filter(i=>i.due_date&&i.due_date<td&&i.status!=='Paid');
   const owed=unpaid.reduce((s,i)=>s+(Number(i.total)-Number(i.paid||0)),0);
   const rev=rangeInvs.filter(i=>i.status==='Paid').reduce((s,i)=>s+Number(i.total),0);
   const doneJobs=rangeJobs.filter(j=>j.status==='Completed').length;
@@ -1162,7 +1161,7 @@ function openCreateMemberModal(isFirstSetup=false){
     <div class="modal-actions">
       <button class="btn btn-primary" onclick="createMember('${isFirstSetup}')">Create Account</button>
       ${!isFirstSetup?`<button class="btn btn-secondary" onclick="closeModal()">Cancel</button>`:''}
-    </div>`);
+    </div>`,isFirstSetup===true||isFirstSetup==='true');
 }
 async function createMember(isFirstSetup=false){
   const name=document.getElementById('tm_name').value.trim();
