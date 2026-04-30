@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CivicDesk is currently undergoing scheduled maintenance. We'll be back shortly." />
+  <title>Under Maintenance — CivicDesk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- NOTE: Do NOT include router.js on this page — it would cause an infinite redirect loop -->
+  <script src="js/config.js"></script>
+
+  <style>
+    /* Extra polish for maintenance page */
+    .maintenance-page {
+      background:
+        radial-gradient(ellipse 70% 60% at 60% 30%, rgba(201,151,58,0.10) 0%, transparent 60%),
+        linear-gradient(135deg, #0f1f3d 0%, #1a2f55 100%);
+    }
+    .maintenance-inner { animation: fadeUp 0.8s ease both; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .maintenance-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    .maintenance-inner h1 {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      margin-bottom: 1rem;
+    }
+    .maintenance-inner p {
+      color: rgba(255,255,255,0.6);
+      font-size: 1.05rem;
+      margin-bottom: 2rem;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .maintenance-contact {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .maintenance-contact a {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .maintenance-contact a:hover { color: var(--gold); }
+    .maintenance-divider {
+      width: 48px;
+      height: 2px;
+      background: var(--gold);
+      margin: 1.5rem auto;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="maintenance-page">
+    <div class="maintenance-inner">
+
+      <div class="maintenance-logo">Civic<span>Desk</span></div>
+
+      <span class="maintenance-icon">🔧</span>
+
+      <h1>We're Updating the Site</h1>
+
+      <div class="maintenance-divider"></div>
+
+      <p>CivicDesk is currently undergoing scheduled maintenance. We'll be back up very shortly — thank you for your patience.</p>
+
+      <p style="font-size:0.9rem; color:rgba(255,255,255,0.4);">In the meantime, you can still reach us directly.</p>
+
+      <a href="#" id="maint-whatsapp" class="btn btn-ghost" style="margin:0 auto;">
+        💬 Message Us on WhatsApp
+      </a>
+
+      <div class="maintenance-contact">
+        <a href="#" id="maint-email">✉️ Email Us</a>
+        <span style="color:rgba(255,255,255,0.15);">|</span>
+        <a href="#" id="maint-whatsapp2">💬 WhatsApp</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Inject contact details from config
+    const cfg = SITE_CONFIG.contact;
+    const wa = `https://wa.me/${cfg.whatsapp.replace(/\D/g, "")}`;
+    document.getElementById("maint-whatsapp").href = wa;
+    document.getElementById("maint-whatsapp2").href = wa;
+    document.getElementById("maint-email").href = `mailto:${cfg.email}`;
+    document.getElementById("maint-whatsapp2").textContent = `💬 ${cfg.whatsappDisplay}`;
+    document.getElementById("maint-email").textContent = `✉️ ${cfg.email}`;
+  </script>
+
+</body>
+</html>
