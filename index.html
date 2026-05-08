@@ -3,149 +3,176 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="CivicDesk — Jamaica's trusted business registration service. We handle your C.O.J company registration so you can focus on building." />
-  <title>CivicDesk — Business Registration Made Simple</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="css/style.css" />
+  <title>Fasttrack Registry — Business Registration Made Simple | Jamaica</title>
+  <meta name="description" content="Jamaica's trusted partner for fast, accurate business registration and compliance filing. Company incorporation, business name registration, TRN, NIS and more." />
 
-  <!-- Maintenance mode runs before anything else -->
-  <script src="js/config.js"></script>
-  <script src="js/router.js"></script>
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://fasttrackregistry.com/" />
+  <meta property="og:title"       content="Fasttrack Registry — Business Registration Made Simple" />
+  <meta property="og:description" content="Jamaica's trusted partner for fast, accurate business registration and compliance filing." />
+  <meta property="og:image"       content="./assets/og-image.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Fasttrack Registry — Business Registration Made Simple" />
+  <meta name="twitter:description" content="Jamaica's trusted partner for fast, accurate business registration and compliance filing." />
+
+  <link rel="canonical" href="https://fasttrackregistry.com/" />
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
-<body>
+<body data-page="index">
 
-  <!-- ── NAVIGATION ───────────────────────────────────────── -->
-  <nav id="main-nav" aria-label="Main navigation">
-    <div class="container">
-      <div class="nav-inner">
-        <a href="index.html" class="nav-logo">Civic<span>Desk</span></a>
-        <button id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
-        <ul id="nav-menu" role="list">
-          <li><a href="#services" class="nav-link">Services</a></li>
-          <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
-          <li><a href="#benefits" class="nav-link">Why Us</a></li>
-          <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
-          <li><a href="booking.html" class="btn btn-primary nav-cta">Book Now</a></li>
-        </ul>
-      </div>
+  <!-- ── Navigation ─────────────────────────────────────── -->
+  <header data-nav role="banner">
+    <div class="container nav__inner">
+      <a href="./index.html" class="nav__logo" aria-label="Fasttrack Registry home">
+        <img src="./assets/logo.svg" alt="Fasttrack Registry seal" class="nav__logo-img"/>
+        <span data-nav-logo>Fasttrack <span>Registry</span></span>
+      </a>
+
+      <nav aria-label="Main navigation">
+        <ul class="nav__links" data-nav-links></ul>
+      </nav>
+
+      <a href="./booking.html" class="btn btn--primary nav__cta" data-nav-cta>Get Started</a>
+
+      <button
+        class="nav__toggle"
+        data-nav-toggle
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span></span><span></span><span></span>
+      </button>
     </div>
+  </header>
+
+  <!-- Mobile menu -->
+  <nav id="mobile-menu" data-nav-mobile aria-label="Mobile navigation">
+    <ul data-nav-links></ul>
+    <a href="./booking.html" class="btn btn--primary" data-nav-cta>Get Started</a>
   </nav>
 
-  <!-- ── HERO ─────────────────────────────────────────────── -->
-  <section id="hero" aria-label="Hero">
-    <div class="hero-bg"></div>
-    <div class="hero-grid"></div>
-    <div class="container">
-      <div class="hero-content">
-        <div class="hero-badge">🇯🇲 Serving Jamaican Entrepreneurs</div>
-        <h1 id="hero-headline">Your Business,<br>Officially Registered.</h1>
-        <p id="hero-sub">Loading…</p>
-        <div class="hero-actions">
-          <a id="hero-cta" href="booking.html" class="btn btn-primary">Book a Free Consultation</a>
-          <a id="hero-cta2" href="#services" class="btn btn-ghost">See Our Services</a>
-        </div>
-        <div class="hero-trust">
-          <div class="hero-trust-item">Registered through C.O.J</div>
-          <div class="hero-trust-item">100% Jamaican-owned</div>
-          <div class="hero-trust-item">Free consultation</div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <main>
 
-  <!-- ── SERVICES ─────────────────────────────────────────── -->
-  <section id="services" aria-label="Services">
-    <div class="container">
-      <header class="section-header">
-        <span class="section-label">Our Services</span>
-        <h2>Registration for Every Stage</h2>
-        <p>Whether you're starting small or incorporating a full company, we have the expertise to get you registered quickly and correctly.</p>
-      </header>
-      <div id="services-grid" role="list" aria-label="Service options"></div>
-    </div>
-  </section>
-
-  <!-- ── HOW IT WORKS ─────────────────────────────────────── -->
-  <section id="how-it-works" aria-label="How it works">
-    <div class="container">
-      <header class="section-header">
-        <span class="section-label">The Process</span>
-        <h2>Simple. Clear. Done Right.</h2>
-        <p>Three steps stand between you and an officially registered business in Jamaica.</p>
-      </header>
-      <div id="steps-list" aria-label="Registration steps"></div>
-    </div>
-  </section>
-
-  <!-- ── BENEFITS ─────────────────────────────────────────── -->
-  <section id="benefits" aria-label="Why CivicDesk">
-    <div class="container">
-      <header class="section-header">
-        <span class="section-label">Why CivicDesk</span>
-        <h2>Built Around Your Success</h2>
-        <p>We exist because your time and energy belong to your business — not to paperwork.</p>
-      </header>
-      <div id="benefits-grid" role="list" aria-label="Benefits of CivicDesk"></div>
-    </div>
-  </section>
-
-  <!-- ── TESTIMONIALS ──────────────────────────────────────── -->
-  <section id="testimonials" aria-label="Client testimonials">
-    <div class="container">
-      <header class="section-header">
-        <span class="section-label">Testimonials</span>
-        <h2>Trusted by Jamaican Entrepreneurs</h2>
-        <p>Don't take our word for it — hear from the business owners we've helped get registered.</p>
-      </header>
-      <div id="testimonials-grid" role="list" aria-label="Client testimonials"></div>
-    </div>
-  </section>
-
-  <!-- ── CTA BANNER ────────────────────────────────────────── -->
-  <section id="cta-banner" aria-label="Call to action">
-    <div class="container">
-      <div class="cta-inner">
-        <h2>Ready to Make It Official?</h2>
-        <p>Start your registration today. Book your free consultation and let us handle the rest.</p>
-        <a id="cta-btn" href="booking.html" class="btn btn-primary">Book a Free Consultation</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── FOOTER ────────────────────────────────────────────── -->
-  <footer aria-label="Site footer">
-    <div class="container">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <div class="nav-logo">Civic<span>Desk</span></div>
-          <p id="footer-tagline"></p>
-        </div>
-        <div class="footer-col">
-          <h4>Navigation</h4>
-          <ul role="list">
-            <li><a href="#services">Services</a></li>
-            <li><a href="#how-it-works">How It Works</a></li>
-            <li><a href="#benefits">Why Us</a></li>
-            <li><a href="booking.html">Book Now</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Contact</h4>
-          <ul role="list">
-            <li><a href="#" class="email-link">Email Us</a></li>
-            <li><a href="#" class="whatsapp-link">WhatsApp Us</a></li>
-          </ul>
+    <!-- ── Hero ──────────────────────────────────────────── -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="hero__pattern" aria-hidden="true"></div>
+      <div class="container">
+        <div class="hero__content">
+          <p class="hero__eyebrow" data-hero-eyebrow></p>
+          <h1 id="hero-heading">
+            <span data-hero-headline></span>
+            <span class="hero__headline-accent" data-hero-accent></span>
+          </h1>
+          <p class="hero__sub" data-hero-sub></p>
+          <div class="hero__ctas">
+            <a href="./booking.html" class="btn btn--primary btn--lg" data-hero-cta-primary></a>
+            <a href="#services"      class="btn btn--ghost"            data-hero-cta-secondary></a>
+          </div>
+          <p class="hero__trust" data-hero-trust></p>
         </div>
       </div>
-      <div class="footer-bottom">
-        <span id="footer-copy"></span>
-        <span class="footer-powered">Serving Jamaica through C.O.J</span>
+    </section>
+
+    <!-- ── Trust Stats ────────────────────────────────────── -->
+    <section class="trust-section" aria-labelledby="trust-heading">
+      <div class="container text-center">
+        <p class="section-label" data-trust-label></p>
+        <h2 id="trust-heading" data-trust-heading></h2>
+        <div class="stats-grid" data-trust-stats></div>
       </div>
+    </section>
+
+    <!-- ── Services ──────────────────────────────────────── -->
+    <section class="services-section" id="services" aria-labelledby="services-heading">
+      <div class="container">
+        <div class="section-header text-center" data-reveal>
+          <p class="section-label" data-services-label></p>
+          <h2 id="services-heading" data-services-heading></h2>
+          <p data-services-sub></p>
+        </div>
+        <div class="services-grid" data-services-grid></div>
+      </div>
+    </section>
+
+    <!-- ── How It Works ───────────────────────────────────── -->
+    <section class="how-section" id="how-it-works" aria-labelledby="how-heading">
+      <div class="container">
+        <div class="section-header text-center" data-reveal>
+          <p class="section-label" data-how-label></p>
+          <h2 id="how-heading" data-how-heading></h2>
+          <p data-how-sub></p>
+        </div>
+        <div class="steps-container" data-how-steps></div>
+      </div>
+    </section>
+
+    <!-- ── Pricing ────────────────────────────────────────── -->
+    <section class="pricing-section" id="pricing" aria-labelledby="pricing-heading">
+      <div class="container">
+        <div class="section-header text-center" data-reveal>
+          <p class="section-label" data-pricing-label></p>
+          <h2 id="pricing-heading" data-pricing-heading></h2>
+          <p data-pricing-sub></p>
+        </div>
+        <div class="pricing-grid" data-pricing-grid></div>
+        <p class="pricing-note" data-pricing-note></p>
+      </div>
+    </section>
+
+    <!-- ── FAQ ────────────────────────────────────────────── -->
+    <section class="faq-section" id="faq" aria-labelledby="faq-heading">
+      <div class="container">
+        <div class="section-header text-center" data-reveal>
+          <p class="section-label" data-faq-label></p>
+          <h2 id="faq-heading" data-faq-heading></h2>
+          <p data-faq-sub></p>
+        </div>
+        <div class="faq-list" data-faq-items></div>
+      </div>
+    </section>
+
+    <!-- ── CTA Banner ─────────────────────────────────────── -->
+    <section class="cta-banner" aria-labelledby="cta-heading" data-reveal>
+      <div class="container">
+        <h2 id="cta-heading" data-cta-heading></h2>
+        <p data-cta-sub></p>
+        <a href="./booking.html" class="btn btn--primary btn--lg" data-cta-btn></a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ────────────────────────────────────────────── -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer__inner">
+        <div>
+          <p class="footer__brand-name" data-footer-logo></p>
+          <p class="footer__tagline" data-footer-tagline></p>
+        </div>
+        <nav aria-label="Footer navigation">
+          <ul class="footer__links" data-footer-links></ul>
+        </nav>
+        <div class="footer__contact">
+          <a href="#" data-footer-email-link>
+            <span data-footer-email></span>
+          </a>
+          <a href="#" data-footer-whatsapp-link target="_blank" rel="noopener">
+            <span data-footer-whatsapp></span>
+          </a>
+        </div>
+      </div>
+      <p class="footer__bottom" data-footer-legal></p>
     </div>
   </footer>
 
-  <script src="js/main.js"></script>
-
+  <script src="./js/config.js"></script>
+  <script src="./js/router.js" defer></script>
+  <script src="./js/main.js"   defer></script>
 </body>
 </html>
